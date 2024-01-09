@@ -1,0 +1,4 @@
+scipy
+gradio
+langchain
+langchain_community
