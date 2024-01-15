@@ -23,8 +23,12 @@ def bot_response(message, history):
         unique_entity_type_list, unique_relation_list = [], []
         entity_list, type_list, relationship_list, entity_type_list = [], [], [], []
 
-        path = message.split(":")[1].strip()
+        path = message.split(":")[1].strip()        
         file = read_file(path)
+        print("FILE TEXT:", file)
+
+        if file == "not_supported":
+            return "Given file format is not supported by the chatbot"
         
         yield "Graph is building..."
 
@@ -32,34 +36,6 @@ def bot_response(message, history):
         objects = build_graphdb(msg4llm=llmmsg)
 
         entity_list, type_list, relationship_list, entity_type_list = parse_llm_response(objects)
-
-        '''
-        batch = generate_batch(file)                    
-        for i in range(1):
-            objects = build_graphdb(msg4llm=batch[i]) # get entities and relationships as str
-            print("\nObjects:", objects)
-            entity_list, type_list, relationship_list, entity_type_list = parse_llm_response(objects)     
-
-            relationship_list += relationship_list
-            entity_type_list += entity_type_list
-
-            print("\nRelations:", relationship_list)
-            print("\nEntities:", entity_type_list)
-
-            time.sleep(2)
-
-        for ent in entity_type_list:
-            if ent not in unique_entity_type_list:
-                unique_entity_type_list.append(ent)
-
-        for rel in relationship_list:
-            if rel not in unique_relation_list:
-                unique_relation_list.append(rel)
-
-        entity_type_list = unique_entity_type_list
-        relationship_list = unique_relation_list
-
-        '''
         
         print("\nRelations:", relationship_list)
         print("\nEntities:", entity_type_list)

@@ -1,13 +1,25 @@
 from langchain.schema import HumanMessage, SystemMessage
 import numpy
 import spacy
+from pypdf import PdfReader
 
 nlp = spacy.load("en_core_web_sm")
 
 def read_file(path):
-    with open(path, 'r') as file:
-        text = file.read().strip()
+    path_extention = path.split(".")[1]
 
+    if path_extention == "txt":
+        with open(path, 'r') as file:
+            text = file.read().strip()
+    elif path_extention == "pdf":
+        reader = PdfReader(path)
+        num_of_pages = len(reader.pages)
+        text = ""
+        for page_num in range(num_of_pages):
+            page = reader.pages[page_num]
+            text += str(page.extract_text())
+    else:
+        text = "not_supported"
     return text
 
 def prepare_msg(msg):    
