@@ -13,4 +13,4 @@ Supported Document Formats:
 If you run the turkish_history.txt and french_history.pdf files among the sample data sets, you will create a knowledge graph containing summary information about Turkish and French history.
 <img src="images/img1.png" height="30%">
 <img src="images/graph_example.png" height="30%">
-<img src="images/detailed_relationshipts.png" height="30%">
+<img src="images/detailed_relationships.png" height="30%">
