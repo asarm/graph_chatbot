@@ -1,19 +1,28 @@
-import random
-import gradio as gr
-from neo4j_utils import *
-from utils import *
 import time
 
-OPENAIKEY = ""
+import gradio as gr
 
-graph, chain = init_graph(OPENAIKEY)
-chat = ChatOpenAI(openai_api_key=OPENAIKEY)
+from conf.config import Config
+from neo4j_utils import *
+from utils import *
+
+conf = Config()
+graph, chain = init_graph(
+    openai_key=conf.openApi_key,
+    graph_ip=conf.graph_ip,
+    graph_port=conf.graph_port,
+    graph_pass=conf.graph_password,
+    graph_user=conf.graph_username
+)
+chat = ChatOpenAI(openai_api_key=conf.openApi_key)
 file = None
 
+
 def build_graphdb(msg4llm):
-    message = chat(msg4llm)   
+    message = chat(msg4llm)
 
     return message
+
 
 def bot_response(message, history):
     global file
@@ -23,20 +32,20 @@ def bot_response(message, history):
         unique_entity_type_list, unique_relation_list = [], []
         entity_list, type_list, relationship_list, entity_type_list = [], [], [], []
 
-        path = message.split(":")[1].strip()        
+        path = message.split(":")[1].strip()
         file = read_file(path)
         print("FILE TEXT:", file)
 
         if file == "not_supported":
             return "Given file format is not supported by the chatbot"
-        
+
         yield "Graph is building..."
 
         llmmsg = prepare_msg(file)
         objects = build_graphdb(msg4llm=llmmsg)
 
         entity_list, type_list, relationship_list, entity_type_list = parse_llm_response(objects)
-        
+
         print("\nRelations:", relationship_list)
         print("\nEntities:", entity_type_list)
 
@@ -55,15 +64,16 @@ def bot_response(message, history):
             relationship = relation[1]
             target = relation[2]
 
-            relationship_list[id] = [source.strip().replace(" ", "_"), relationship.strip().replace(" ", "_"), target.strip().replace(" ", "_")] 
+            relationship_list[id] = [source.strip().replace(" ", "_"), relationship.strip().replace(" ", "_"),
+                                     target.strip().replace(" ", "_")]
 
         time.sleep(2)
         generated_queries = cypher_query(relationship_list, entity_type_list)
         for q in generated_queries:
             queries_str = f"\n{q}"
-        
-        for q in generated_queries: 
-            execute_query(q, graph)        
+
+        for q in generated_queries:
+            execute_query(q, graph)
         queries_str += "\nDone"
 
         yield queries_str
@@ -74,13 +84,14 @@ def bot_response(message, history):
 
         yield "Done"
     else:
-        if file is None and len(graph_schema(graph=graph))==117:
+        if file is None and len(graph_schema(graph=graph)) == 117:
             yield "First, load a file. Database is empty."
         else:
             print("Waiting for model response...")
             time.sleep(2)
             resp = search_on_graph(message, chain, graph)
 
-            yield resp    
+            yield resp
+
 
 gr.ChatInterface(bot_response).launch()

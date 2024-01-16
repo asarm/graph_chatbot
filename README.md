@@ -1,6 +1,7 @@
 # graph_chatbot
 
 Install the packages requirements.txt from <br> 
+Fill out config.yaml file <br>
 Replace with your API key at app.py and replace database information at neo4j_utils.py <br>
 Activate APOC plugin on NEO4J Database. <br>
 Run app.py to start the chatbot. <br>
@@ -11,6 +12,8 @@ Supported Document Formats:
     <li>pdf</li>
 </ul>
 If you run the turkish_history.txt and french_history.pdf files among the sample data sets, you will create a knowledge graph containing summary information about Turkish and French history.
+
+
 <img src="images/img1.png" height="30%">
 <img src="images/graph_example.png" height="30%">
 <img src="images/detailed_relationships.png" height="30%">

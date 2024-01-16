@@ -1,0 +1,7 @@
+api:
+  open-api-key: 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
+graph:
+  ip: localhost
+  port: 7687
+  username: neo4j
+  password: chatbot1234
