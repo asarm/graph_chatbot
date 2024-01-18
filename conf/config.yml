@@ -1,7 +1,7 @@
 api:
-  open-api-key: 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
+  open-api-key:
 graph:
   ip: localhost
   port: 7687
   username: neo4j
-  password: chatbot1234
+  password:
