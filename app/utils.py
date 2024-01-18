@@ -6,7 +6,7 @@ nlp = spacy.load("en_core_web_sm")
 
 
 def read_file(path):
-    path_extention = path.split(".")[1]
+    path_extention = path.split(".")[-1]
 
     if path_extention == "txt":
         with open(path, 'r') as file:

@@ -32,8 +32,8 @@ def bot_response(message, history):
         unique_entity_type_list, unique_relation_list = [], []
         entity_list, type_list, relationship_list, entity_type_list = [], [], [], []
 
-        path = message.split(":")[1].strip()
-        file = read_file(path)
+        path = f"../examples/{message.split(':')[1].strip()}"
+        file = read_file("../examples/turkish_history.txt")
         print("FILE TEXT:", file)
 
         if file == "not_supported":

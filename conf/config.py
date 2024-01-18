@@ -3,7 +3,7 @@ import yaml
 
 class Config:
     def __init__(self):
-        with open('conf/config.yml', 'rt') as f:
+        with open('../conf/config.yml', 'rt') as f:
             config = yaml.safe_load(f.read())
 
         self.openApi_key = config["api"]["open-api-key"]
